@@ -1,25 +1,21 @@
 from django.shortcuts import render
-
-from .models import Greeting
+from .models import Greeting, Visit  # <-- DODANO Visit
 
 # Create your views here.
 
-
 def index(request):
-    return render(request, "index.html")
+    # Zapis każdej wizyty w bazie
+    Visit.objects.create()         # <-- DODANO TĘ LINIĘ
+    
+    # Pobranie liczby wszystkich wizyt
+    visits = Visit.objects.count()  # <-- DODANO TĘ LINIĘ
+    
+    # Przekazanie liczby wizyt do szablonu index.html
+    return render(request, "index.html", {"visits": visits})  # <-- DODANO {"visits": visits}
 
 
 def db(request):
-    # If you encounter errors visiting the `/db/` page on the example app, check that:
-    #
-    # When running the app on Heroku:
-    #   1. You have added the Postgres database to your app.
-    #   2. You have uncommented the `psycopg` dependency in `requirements.txt`, and the `release`
-    #      process entry in `Procfile`, git committed your changes and re-deployed the app.
-    #
-    # When running the app locally:
-    #   1. You have run `./manage.py migrate` to create the `hello_greeting` database table.
-
+    # Tę funkcję zostawiamy bez zmian, tak jak była w oryginale
     greeting = Greeting()
     greeting.save()
 
